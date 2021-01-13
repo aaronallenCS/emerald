@@ -5,18 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="main.css">
   <script src="button.js"></script>
-  <title>Personal Assignmnt Example</title>
+  <title>Assignment1</title>
 </head>
-<body>
+<body id = "changeBackground">
   <div class="full-width">
     <div class="half red">
-      <span id="wordable">This should be red</span>
-      <button onclick="replaceWord()">Get Word</button>
+    <section>
+      <div class="quote-text" id="js-quote-text"></div>
+    </section>
+
+
+    <button type="button" id="js-new-quote" class="new-quote button">
+      Generate a new quote
+    </button>
+
+
     </div>
     <div class="half blue" id="changeable">
-      <span>This should start blue</span>
+      <span>This should turn red, and change the background to purple!</span>
     <button id="update-color" onclick="changeColor()">Update Color!</button>
     </div>
   </div>
 </body>
+
+<script>
+
+  const newQuoteButton = document.querySelector('#js-new-quote');
+  newQuoteButton.addEventListener('click', getQuote);
+
+  const apiCall = 'https://api.whatdoestrumpthink.com/api/v1/quotes/random';
+
+  async function getQuote() {
+    try {
+      const response = await fetch(apiCall)
+      if (!response.ok) {
+        throw Error(response.statusText)
+      }
+      const json = await response.json();
+      displayQuote(json.message);
+    } catch (err) {
+      console.log(err)
+      alert('Failed to fetch new quote');
+    }
+  }
+
+  function displayQuote(quote) {
+    const quoteText = document.querySelector('#js-quote-text');
+    quoteText.textContent = quote;
+  }
+</script>
 </html>
